@@ -1,3 +1,7 @@
+# Weather-App
+
+This is a weather app created with Vue js, the Open Weather API and Cloud Firestore in Firebase for real time update
+
 # Weather App
 
 This template should help get you started developing with Vue 3 in Vite.
