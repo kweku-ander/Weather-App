@@ -1,5 +1,7 @@
 <template>
-  <Navigation />
+  <div class="main">
+    <Navigation class="navigation" />
+  </div>
 
   <RouterView />
 </template>
@@ -38,13 +40,12 @@ export default {
 
               updateDoc(doc(firestoreDb, change.doc.id), {
                 currentWeather: data
+              }).then(() => {
+                this.cities.push(change.doc.data())
               })
-                .then(() => {
-                  this.cities.push(change.doc.data())
-                })
-                .then(() => {
-                  console.log(this.cities)
-                })
+              // .then(() => {
+              //   console.log(this.cities)
+              // })
             } catch (err) {
               console.log(err)
             }
@@ -62,3 +63,29 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.main {
+  height: 100vh;
+  .navigation {
+    z-index: 99;
+    position: fixed;
+    max-width: 1024px;
+    width: 100%;
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .container {
+    padding: 0 20px;
+  }
+}
+</style>
