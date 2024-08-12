@@ -1,13 +1,11 @@
 <template>
   <div class="main">
-    <Navigation class="navigation" />
+    <Navigation />
+    <router-view :cities="cities"></router-view>
   </div>
-
-  <RouterView />
 </template>
 
 <script>
-// import { RouterLink, RouterView } from 'vue-router'
 import axios from 'axios'
 import db from './firebase/firebase'
 import { collection, onSnapshot, doc, updateDoc } from 'firebase/firestore'
@@ -18,13 +16,15 @@ export default {
   data() {
     return {
       APIkey: '9102a4430044f10a43c96f4168761fa7',
-      city: 'Dallas',
       cities: []
+
+      // city: null
     }
   },
   created() {
     // this.getCurrentWeather()
     this.getCityWeather()
+    // console.log(this.cities)
   },
   methods: {
     getCityWeather() {
@@ -43,9 +43,6 @@ export default {
               }).then(() => {
                 this.cities.push(change.doc.data())
               })
-              // .then(() => {
-              //   console.log(this.cities)
-              // })
             } catch (err) {
               console.log(err)
             }
@@ -54,11 +51,10 @@ export default {
       })
     },
     getCurrentWeather() {
-      axios
-        .get(
-          `http://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=imperial&appid=${this.APIkey}`
-        )
-        .then((res) => console.log(res.data))
+      axios.get(
+        `http://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=imperial&appid=${this.APIkey}`
+      )
+      // .then((res) => console.log(res.data))
     }
   }
 }
@@ -73,16 +69,9 @@ export default {
 }
 
 .main {
+  max-width: 1024px;
+  margin: 0 auto;
   height: 100vh;
-  .navigation {
-    z-index: 99;
-    position: fixed;
-    max-width: 1024px;
-    width: 100%;
-    box-shadow:
-      0 4px 6px -1px rgba(0, 0, 0.1),
-      0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  }
 
   .container {
     padding: 0 20px;
