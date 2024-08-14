@@ -1,6 +1,7 @@
 <template>
   <div class="main">
-    <Navigation />
+    <Modal v-if="modalOpen" v-on:close-modal="toggleModal" :APIkey="APIkey" />
+    <Navigation v-on:add-city="toggleModal" />
     <router-view :cities="cities"></router-view>
   </div>
 </template>
@@ -10,13 +11,16 @@ import axios from 'axios'
 import db from './firebase/firebase'
 import { collection, onSnapshot, doc, updateDoc } from 'firebase/firestore'
 import Navigation from './components/Navigation.vue'
+import Modal from './components/Modal.vue'
+
 export default {
   name: 'App',
-  components: { Navigation },
+  components: { Navigation, Modal },
   data() {
     return {
       APIkey: '9102a4430044f10a43c96f4168761fa7',
-      cities: []
+      cities: [],
+      modalOpen: null
 
       // city: null
     }
@@ -50,12 +54,15 @@ export default {
         })
       })
     },
-    getCurrentWeather() {
-      axios.get(
-        `http://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=imperial&appid=${this.APIkey}`
-      )
-      // .then((res) => console.log(res.data))
+    toggleModal() {
+      this.modalOpen = !this.modalOpen
     }
+    // getCurrentWeather() {
+    //   axios.get(
+    //     `http://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=imperial&appid=${this.APIkey}`
+    //   )
+    //   // .then((res) => console.log(res.data))
+    // }
   }
 }
 </script>
