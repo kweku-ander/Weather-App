@@ -35,25 +35,30 @@ export default {
       let firestoreDb = collection(db, 'cities')
       onSnapshot(firestoreDb, (snap) => {
         snap.docChanges().forEach(async (change) => {
-          if (change.type === 'added') {
-            try {
-              const response = await axios.get(
-                `http://api.openweathermap.org/data/2.5/weather?q=${change.doc.data().city}&units=imperial&appid=${this.APIkey}`
-              )
-              const data = response.data
+          const cityData = change.doc.data()
 
-              updateDoc(doc(firestoreDb, change.doc.id), {
-                currentWeather: data
-              }).then(() => {
-                this.cities.push(change.doc.data())
-              })
-            } catch (err) {
-              console.log(err)
+          if (change.type === 'added') {
+            if (!cityData.currentWeather) {
+              // Check if the 'currentWeather' field does not exist
+              try {
+                const response = await axios.get(
+                  `http://api.openweathermap.org/data/2.5/weather?q=${cityData.city}&units=imperial&appid=${this.APIkey}`
+                )
+                const data = response.data
+
+                await updateDoc(doc(firestoreDb, change.doc.id), {
+                  currentWeather: data
+                })
+              } catch (err) {
+                console.log(err)
+              }
             }
+            this.cities.push(cityData)
           }
         })
       })
     },
+
     toggleModal() {
       this.modalOpen = !this.modalOpen
     }
