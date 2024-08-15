@@ -3,7 +3,7 @@
     <nav>
       <span>Add City</span>
       <div class="right">
-        <i class="fas fa-edit"></i>
+        <i @click="edditCities" class="fas fa-edit"></i>
         <i @click="Refresh" class="fas fa-sync"></i>
         <i @click="AddCity" class="fas fa-plus"></i>
       </div>
@@ -20,6 +20,9 @@ export default {
     },
     Refresh() {
       location.reload()
+    },
+    edditCities() {
+      this.$emit('edit-cities')
     }
   }
 }

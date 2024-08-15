@@ -1,8 +1,8 @@
 <template>
   <div class="main">
     <Modal v-if="modalOpen" v-on:close-modal="toggleModal" :APIkey="APIkey" />
-    <Navigation v-on:add-city="toggleModal" />
-    <router-view :cities="cities"></router-view>
+    <Navigation v-on:add-city="toggleModal" v-on:edit-cities="toggleEdit" />
+    <router-view :cities="cities" :edit="edit"></router-view>
   </div>
 </template>
 
@@ -20,8 +20,8 @@ export default {
     return {
       APIkey: '9102a4430044f10a43c96f4168761fa7',
       cities: [],
-      modalOpen: null
-
+      modalOpen: null,
+      edit: null
       // city: null
     }
   },
@@ -61,6 +61,10 @@ export default {
 
     toggleModal() {
       this.modalOpen = !this.modalOpen
+    },
+
+    toggleEdit() {
+      this.edit = !this.edit
     }
     // getCurrentWeather() {
     //   axios.get(
